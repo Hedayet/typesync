@@ -10,13 +10,16 @@ TypeSync is an open-source tool designed to facilitate the seamless conversion o
 
 ## Installation
 
-Install TypeSync,
+Clone this repository,
+`git clone https://github.com/Hedayet/typesync`
+
+Install dependencies,
 
 ```bash
-npm install typesync --save-dev
+npm install
 ```
 
-Run TypeSync,
+Run ,
 
 ```bash
 npm run start
