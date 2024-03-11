@@ -1,13 +1,13 @@
 {
-  "name": "js-enum-bridge",
-  "version": "1.0.0",
+  "name": "typesync",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "npx ts-node index.ts"
   },
   "author": "@hedayet",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
     "@babel/preset-typescript": "^7.23.3",
@@ -16,5 +16,9 @@
   },
   "dependencies": {
     "typescript": "^5.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hedayet/typesync"
   }
 }
