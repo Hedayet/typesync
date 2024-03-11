@@ -1,4 +1,4 @@
 {
-  "outputDirectory": "__generated_dart",
-  "projectDirectory": "./src"
+  "inputDirectory": "examples",
+  "outputDirectory": "__generated_dart"
 }

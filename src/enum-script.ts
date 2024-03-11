@@ -4,8 +4,8 @@ import traverse from "@babel/traverse";
 
 export class TsEnumToDartEnumGenerator {
   constructor(
-    public outputDirectory: string = "__generated/dart",
-    public projectDirectory: string = "./"
+    public inputDirectory: string = "./",
+    public outputDirectory: string = "__generated/dart"
   ) {}
 
   // Function to crawl through files in a directory
@@ -42,7 +42,10 @@ export class TsEnumToDartEnumGenerator {
     const ast = babel.parseSync(code, {
       filename: filePath,
       sourceType: "module",
-      presets: ["@babel/preset-typescript"],
+      presets: [
+        ["@babel/preset-env", { targets: { node: "current" } }],
+        "@babel/preset-typescript",
+      ],
     });
 
     const outputDirectory = this.outputDirectory;
@@ -71,14 +74,12 @@ export class TsEnumToDartEnumGenerator {
   };
 
   run = (): void => {
+    console.log(this.outputDirectory);
     if (fs.existsSync(this.outputDirectory)) {
       fs.rmSync(this.outputDirectory, { recursive: true });
     }
     fs.mkdirSync(this.outputDirectory, { recursive: true });
 
-    this.crawlAndProcessDirectory(this.projectDirectory);
+    this.crawlAndProcessDirectory(this.inputDirectory);
   };
 }
-
-const generator = new TsEnumToDartEnumGenerator();
-generator.run();
