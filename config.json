@@ -1,4 +1,5 @@
 {
   "inputDirectory": "examples",
-  "outputDirectory": "__generated_dart"
+  "outputDirectory": "__generated/dart",
+  "sourceExtensions": [".ts", ".tsx"]
 }

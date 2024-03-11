@@ -2,10 +2,11 @@ import fs from "fs";
 import * as babel from "@babel/core";
 import traverse from "@babel/traverse";
 
-export class TsEnumToDartEnumGenerator {
+export class enumGenerator {
   constructor(
     public inputDirectory: string = "./",
-    public outputDirectory: string = "__generated/dart"
+    public outputDirectory: string = "__generated/dart",
+    public sourceFileExtensions: string[] = [".ts"]
   ) {}
 
   // Function to crawl through files in a directory
@@ -18,8 +19,14 @@ export class TsEnumToDartEnumGenerator {
 
       if (stats.isDirectory()) {
         this.crawlAndProcessDirectory(filePath);
-      } else if (file.endsWith(".ts")) {
-        this.processFile(filePath);
+      } else {
+        const fileExtension = file.split(".").pop();
+        if (
+          fileExtension &&
+          this.sourceFileExtensions.includes(`.${fileExtension}`)
+        ) {
+          this.processFile(filePath);
+        }
       }
     }
   };
@@ -52,29 +59,37 @@ export class TsEnumToDartEnumGenerator {
     if (ast == null) {
       return;
     }
-    // Traverse the AST to identify enum declarations
+    this.traverseAst(ast, outputDirectory);
+  };
+
+  private traverseAst = (ast: any, outputDirectory: string) => {
     traverse(ast, {
       TSEnumDeclaration(path) {
-        const enumName = path.node.id.name;
-        const enumValues = path.node.members.map(
-          (member) => (member.id as babel.types.Identifier).name
-        );
-
-        // Generate Dart enum code
-        const dartEnumCode = TsEnumToDartEnumGenerator.generateDartEnumCode(
-          enumName,
-          enumValues
-        );
-
-        // Write Dart enum file
-        const dartFileName = `${outputDirectory}/${enumName}.dart`;
-        fs.writeFileSync(dartFileName, dartEnumCode);
+        enumGenerator.processEnumDeclaration(path, outputDirectory);
       },
     });
   };
 
+  private static processEnumDeclaration = (
+    path: any,
+    outputDirectory: string
+  ) => {
+    const enumName = path.node.id.name;
+    const enumValues = path.node.members.map(
+      (member: { id: babel.types.Identifier }) =>
+        (member.id as babel.types.Identifier).name
+    );
+
+    const dartEnumCode = enumGenerator.generateDartEnumCode(
+      enumName,
+      enumValues
+    );
+
+    const dartFileName = `${outputDirectory}/${enumName}.dart`;
+    fs.writeFileSync(dartFileName, dartEnumCode);
+  };
+
   run = (): void => {
-    console.log(this.outputDirectory);
     if (fs.existsSync(this.outputDirectory)) {
       fs.rmSync(this.outputDirectory, { recursive: true });
     }
