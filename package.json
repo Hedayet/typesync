@@ -1,10 +1,12 @@
 {
-  "name": "typesync",
-  "version": "0.0.1",
+  "name": "js-typesync",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx ts-node index.ts"
+    "start": "npx ts-node index.ts",
+    "build": "npx tsc",
+    "postinstall": "npx tsc & npx ts-node ./create_config.ts"
   },
   "author": "@hedayet",
   "license": "MIT",
@@ -19,6 +21,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Hedayet/typesync"
+    "url": "git+https://github.com/Hedayet/typesync.git"
   }
 }

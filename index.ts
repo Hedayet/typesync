@@ -1,6 +1,7 @@
 import fs from "fs";
 import { enumGenerator } from "./src/enumGenerator";
-const configPath = "./config.json";
+import path from "path";
+const configPath = path.join(process.cwd(), "typesync-config.json");
 
 try {
   const configData = fs.readFileSync(configPath, "utf8");
